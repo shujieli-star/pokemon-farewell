@@ -11,6 +11,7 @@
             --pixel-accent: #ffcb05; 
             --pixel-blue: #3b4cca;
             --tcg-yellow: #f9ca24;
+            /* VT323 放在首位确保英文美观 */
             --font-game: 'VT323', 'DotGothic16', monospace;
         }
 
@@ -37,7 +38,7 @@
             100% { transform: translate(0, 0); }
         }
 
-        /* --- UI 样式 --- */
+        /* --- 导航 UI --- */
         .nav {
             position: sticky; top: 0; width: 100%; padding: 12px 0;
             display: flex; justify-content: center; gap: 15px; z-index: 100;
@@ -60,7 +61,7 @@
         .shake { animation: shakeBall 0.5s both; }
         @keyframes shakeBall { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
 
-        /* --- 像素 TCG 卡片样式 --- */
+        /* --- TCG 卡片样式 --- */
         .tcg-card {
             background: linear-gradient(135deg, #fce38a, #f9ca24);
             border: 5px solid #444; border-radius: 4px; padding: 12px; color: #333;
@@ -71,20 +72,21 @@
         .card-img-frame { background: #fff; border: 2px solid #333; margin: 8px 0; height: 160px; display: flex; align-items: center; justify-content: center; }
         .card-img-frame img { height: 140px; image-rendering: pixelated; }
         
-        /* 核心修复：针对留言内容的整体字号缩小 */
+        /* 核心修复：英文保持大号易读，中文自动视觉缩小 */
         .card-msg-box { 
             background: rgba(255,255,255,0.75); 
             border: 2px solid #333; 
             padding: 10px; 
-            font-size: 0.95rem; /* 整体调小，解决中文忽大忽小视觉差 */
-            line-height: 1.4; 
+            font-size: 1.3rem; /* 保证英文 VT323 的易读性 */
+            line-height: 1.1; /* 像素字体行高不宜过大 */
             word-wrap: break-word; 
-            letter-spacing: 0.2px; 
+            letter-spacing: 0.5px;
             min-height: 60px;
-            font-family: 'DotGothic16', sans-serif; /* 强制中文使用点阵 */
+            /* 关键：font-size-adjust 让 fallback 的中文字体变小 */
+            font-size-adjust: 0.48; 
         }
         
-        .card-footer { text-align: right; margin-top: 8px; font-weight: bold; font-size: 0.9rem; border-top: 1px solid #333; padding-top: 4px; }
+        .card-footer { text-align: right; margin-top: 8px; font-weight: bold; font-size: 1rem; border-top: 1px solid #333; padding-top: 4px; }
         .del-btn { background: #ff4757; color: white; border: 2px solid #333; font-family: var(--font-game); cursor: pointer; font-size: 0.7rem; padding: 2px 6px; margin-left: 8px; box-shadow: 1px 1px 0 #000; }
 
         /* --- 瀑布流布局 --- */
@@ -99,7 +101,7 @@
         .scroll-area { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
 
         .panel { background: #000; border: 4px solid #fff; padding: 30px; width: 380px; margin: 0 auto; box-shadow: 10px 10px 0 rgba(0,0,0,0.5); }
-        input, textarea { width: 100%; background: #222; border: 2px solid #555; color: #fff; padding: 12px; margin-bottom: 15px; font-family: var(--font-game); font-size: 1.1rem; box-sizing: border-box; outline: none; }
+        input, textarea { width: 100%; background: #222; border: 2px solid #555; color: #fff; padding: 12px; margin-bottom: 15px; font-family: var(--font-game); font-size: 1.3rem; font-size-adjust: 0.48; box-sizing: border-box; outline: none; }
         .pixel-btn { width: 100%; padding: 15px; background: var(--pixel-accent); border: none; cursor: pointer; font-family: var(--font-game); font-size: 1.6rem; font-weight: bold; }
 
         .hidden { display: none; }
