@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poké-Farewell: Cosmic Immersion</title>
+    <title>Poké-Farewell: Scroll & Pixel Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,25 +23,14 @@
             overflow-x: hidden;
         }
 
-        /* --- 强化版动态星空 --- */
+        /* --- 动态星空 (大幅浮动) --- */
         .stars-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-        
         .star { 
-            position: absolute; 
-            background: white; 
-            border-radius: 50%; 
-            box-shadow: 0 0 5px rgba(255,255,255,0.5); /* 增加光晕 */
-            animation: 
-                twinkle var(--t-duration) infinite ease-in-out, 
-                floatMove var(--f-duration) infinite ease-in-out; 
+            position: absolute; background: white; border-radius: 50%; 
+            box-shadow: 0 0 5px rgba(255,255,255,0.5);
+            animation: twinkle var(--t-duration) infinite ease-in-out, floatMove var(--f-duration) infinite ease-in-out; 
         }
-
-        @keyframes twinkle { 
-            0%, 100% { opacity: 0.2; transform: scale(0.8); } 
-            50% { opacity: 1; transform: scale(1.2); } 
-        }
-
-        /* 大幅度浮动路径 */
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
         @keyframes floatMove {
             0% { transform: translate(0, 0); }
             33% { transform: translate(var(--mx), var(--my)); }
@@ -51,55 +40,50 @@
 
         /* --- UI 组件 --- */
         h2 { font-family: var(--font-pixel) !important; text-transform: uppercase; letter-spacing: 3px; text-shadow: 2px 2px 0 #000; }
-
-        .nav {
-            position: sticky; top: 0; width: 100%; padding: 12px 0;
-            display: flex; justify-content: center; gap: 15px; z-index: 100;
-            background: rgba(0, 0, 0, 0.9); border-bottom: 3px solid #333;
-        }
-        .nav-btn {
-            background: #000; border: 2px solid white; color: white;
-            padding: 8px 24px; font-family: var(--font-pixel) !important; 
-            font-size: 1.8rem; text-transform: uppercase; cursor: pointer; transition: 0.2s;
-        }
+        .nav { position: sticky; top: 0; width: 100%; padding: 12px 0; display: flex; justify-content: center; gap: 15px; z-index: 100; background: rgba(0, 0, 0, 0.9); border-bottom: 3px solid #333; }
+        .nav-btn { background: #000; border: 2px solid white; color: white; padding: 8px 24px; font-family: var(--font-pixel) !important; font-size: 1.8rem; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
         .nav-btn.active { background: var(--pixel-blue); color: var(--pixel-accent); box-shadow: 4px 4px 0 #000; }
 
         .ball-stage { display: flex; flex-direction: column; align-items: center; margin: 30px 0; }
         .ball-wrapper { position: relative; width: 220px; height: 220px; cursor: pointer; }
         .ball-img { width: 100%; height: 100%; background: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png') no-repeat center/contain; image-rendering: pixelated; }
-        
-        #success-hint { 
-            color: var(--pixel-accent); font-family: var(--font-pixel) !important; 
-            font-size: 2.2rem; margin-top: 15px; opacity: 0; transition: opacity 0.4s; 
-            font-weight: bold; text-transform: uppercase; 
-        }
+        #success-hint { color: var(--pixel-accent); font-family: var(--font-pixel) !important; font-size: 2.2rem; margin-top: 15px; opacity: 0; transition: opacity 0.4s; font-weight: bold; text-transform: uppercase; }
         .shake { animation: shakeBall 0.6s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shakeBall { 0%, 100% { transform: translateX(0); } 15%, 45%, 75% { transform: translateX(-10px) rotate(-10deg); } 30%, 60%, 90% { transform: translateX(10px) rotate(10deg); } }
 
-        /* --- TCG 卡片样式 --- */
+        /* --- TCG 卡片：加入 Scroll 功能 --- */
         .tcg-card {
             background: linear-gradient(135deg, #fce38a, #f9ca24);
             border: 5px solid #444; border-radius: 4px; padding: 12px; color: #333;
             box-shadow: 6px 6px 0 rgba(0,0,0,0.5); break-inside: avoid; margin-bottom: 25px;
             width: 100%; box-sizing: border-box; position: relative;
         }
-        .card-header { 
-            display: flex; justify-content: space-between; font-weight: bold; 
-            font-family: var(--font-pixel) !important; font-size: 2rem; 
-            border-bottom: 2.5px solid #333; padding-bottom: 5px; text-transform: uppercase; align-items: center;
-        }
+        .card-header { display: flex; justify-content: space-between; font-family: var(--font-pixel) !important; font-size: 1.8rem; border-bottom: 2.5px solid #333; padding-bottom: 5px; text-transform: uppercase; align-items: center; }
         .card-img-frame { background: #fff; border: 2.5px solid #333; margin: 8px 0; height: 160px; display: flex; align-items: center; justify-content: center; }
         .card-img-frame img { height: 140px; image-rendering: pixelated; }
+        
+        /* 核心修复：长留言滚动条 */
         .card-msg-box { 
-            background: rgba(255,255,255,0.9); border: 2px solid #333; padding: 12px; 
-            font-family: var(--font-content) !important; font-size: 1.1rem; line-height: 1.5; color: #111; text-align: left; min-height: 80px;
+            background: rgba(255,255,255,0.9); 
+            border: 2px solid #333; 
+            padding: 12px; 
+            font-family: var(--font-content) !important; 
+            font-size: 1.05rem; 
+            line-height: 1.5; 
+            color: #111; 
+            text-align: left; 
+            max-height: 200px; /* 超过此高度开启滚动 */
+            overflow-y: auto; 
+            word-wrap: break-word;
         }
-        .card-footer { text-align: right; margin-top: 10px; font-family: var(--font-pixel) !important; font-size: 1.4rem; border-top: 1px solid #333; padding-top: 6px; text-transform: uppercase; }
 
-        .del-btn {
-            background: #ff4757; color: white; border: 2px solid #333; font-family: var(--font-pixel) !important;
-            cursor: pointer; font-size: 1.2rem; padding: 0 8px; margin-left: 10px; box-shadow: 2px 2px 0 #000;
-        }
+        /* 滚动条像素风格美化 */
+        .card-msg-box::-webkit-scrollbar { width: 8px; }
+        .card-msg-box::-webkit-scrollbar-track { background: #eee; }
+        .card-msg-box::-webkit-scrollbar-thumb { background: #333; border: 1px solid #eee; }
+
+        .card-footer { text-align: right; margin-top: 10px; font-family: var(--font-pixel) !important; font-size: 1.2rem; border-top: 1px solid #333; padding-top: 6px; text-transform: uppercase; }
+        .del-btn { background: #ff4757; color: white; border: 2px solid #333; font-family: var(--font-pixel) !important; cursor: pointer; font-size: 1.1rem; padding: 0 8px; margin-left: 10px; box-shadow: 2px 2px 0 #000; }
 
         /* --- 输入面板 --- */
         .panel { background: #000; border: 4px solid #fff; padding: 30px; width: 400px; margin: 0 auto; box-shadow: 10px 10px 0 rgba(0,0,0,0.5); }
@@ -130,7 +114,7 @@
 <main class="content" style="padding: 20px; display: flex; flex-direction: column; align-items: center;">
     <section id="section-write">
         <div class="ball-stage">
-            <h2 style="color:var(--pixel-accent); font-size: 3rem;">Catch Your Destiny</h2>
+            <h2 style="color:var(--pixel-accent); font-size: 2.5rem;">Catch Your Destiny</h2>
             <div class="ball-wrapper" onclick="handleSend()">
                 <div class="ball-img" id="ball-main"></div>
             </div>
@@ -144,7 +128,7 @@
     </section>
 
     <section id="section-draw" class="hidden" style="text-align: center;">
-        <h2 style="color:var(--pixel-accent); font-size: 3rem;">Collector's Box</h2>
+        <h2 style="color:var(--pixel-accent); font-size: 2.5rem;">Collector's Box</h2>
         <div class="ball-stage">
             <div class="ball-wrapper" onclick="drawOne()">
                 <div class="ball-img" id="ball-draw"></div>
@@ -154,7 +138,7 @@
     </section>
 
     <section id="section-all" class="hidden">
-        <h2 style="text-align: center; color:var(--pixel-accent); font-size: 3.5rem;">THE POKE-WALL</h2>
+        <h2 style="text-align: center; color:var(--pixel-accent); font-size: 3rem;">THE POKE-WALL</h2>
         <div class="masonry-grid" id="wall-grid"></div>
     </section>
 </main>
@@ -175,7 +159,6 @@
         {n: 'Alakazam', id: 65}, {n: 'Blastoise', id: 9}
     ];
 
-    // 避重分配逻辑
     function getPokeDistinct(name) {
         let hash = 0;
         const cleanName = name.trim().toUpperCase();
@@ -268,29 +251,23 @@
     }
     function closeOverlay() { document.getElementById('overlay').style.display = 'none'; }
 
-    // --- 初始化动态星空 ---
+    // 初始化动态星空
     const sf = document.getElementById('starField');
-    const starCount = 150; // 增加星星数量
+    const starCount = 150;
     for(let i=0; i<starCount; i++){
         const s = document.createElement('div');
         s.className = 'star';
-        // 随机尺寸 (1px - 4px)
         const size = Math.random() * 3 + 1;
         s.style.width = size + 'px'; s.style.height = size + 'px';
         s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
-        
-        // 大幅度浮动路径随机值
         const mx = (Math.random() - 0.5) * 150 + 'px'; 
         const my = (Math.random() - 0.5) * 150 + 'px';
         s.style.setProperty('--mx', mx);
         s.style.setProperty('--my', my);
-        
-        // 随机持续时间
         const fDuration = (10 + Math.random() * 20) + 's';
         const tDuration = (1 + Math.random() * 3) + 's';
         s.style.setProperty('--f-duration', fDuration);
         s.style.setProperty('--t-duration', tDuration);
-        
         sf.appendChild(s);
     }
 </script>
