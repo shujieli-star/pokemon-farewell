@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宝可梦：星空寄语</title>
+    <title>Poké-Farewell: Floating Cosmic Pixel</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=DotGothic16&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,7 +11,7 @@
             --pixel-accent: #ffcb05; 
             --pixel-blue: #3b4cca;
             --tcg-yellow: #f9ca24;
-            /* 优先使用 DotGothic16 处理中文像素感 */
+            /* 字体声明：DotGothic16 放在前面以确保中文能被正确渲染成像素风 */
             --font-game: 'DotGothic16', 'VT323', monospace;
         }
 
@@ -102,7 +102,7 @@
             box-shadow: 8px 8px 0 rgba(0,0,0,0.5); break-inside: avoid; margin-bottom: 25px;
             position: relative;
         }
-        .card-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; border-bottom: 2px solid #333; padding-bottom: 4px; align-items: center;}
+        .card-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.3rem; border-bottom: 2px solid #333; padding-bottom: 4px; align-items: center;}
         .card-img-frame { background: #fff; border: 3px solid #333; margin: 8px 0; height: 160px; display: flex; align-items: center; justify-content: center; }
         .card-img-frame img { height: 140px; image-rendering: pixelated; }
         .card-msg-box { background: rgba(255,255,255,0.8); border: 2px solid #333; padding: 10px; font-size: 1.1rem; line-height: 1.4; word-wrap: break-word; letter-spacing: 1px; }
@@ -124,7 +124,7 @@
         .scroll-area { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
 
         .panel { background: #000; border: 4px solid #fff; padding: 25px; width: 320px; margin: 0 auto; }
-        input, textarea { width: 100%; background: #222; border: 2px solid #555; color: #fff; padding: 10px; margin-bottom: 15px; font-family: var(--font-game); font-size: 1rem; box-sizing: border-box; }
+        input, textarea { width: 100%; background: #222; border: 2px solid #555; color: #fff; padding: 10px; margin-bottom: 15px; font-family: var(--font-game); font-size: 1.1rem; box-sizing: border-box; }
         .pixel-btn { width: 100%; padding: 12px; background: var(--pixel-accent); border: none; cursor: pointer; font-family: var(--font-game); font-size: 1.2rem; font-weight: bold; }
 
         .hidden { display: none; }
@@ -135,56 +135,55 @@
 <div class="stars-container" id="starField"></div>
 
 <nav class="nav">
-    <button class="nav-btn active" id="btn-write" onclick="setMode('write')">留下寄语</button>
-    <button class="nav-btn" id="btn-draw" onclick="setMode('draw')">抽取卡片</button>
-    <button class="nav-btn" id="btn-all" onclick="setMode('all')">寄语墙</button>
+    <button class="nav-btn active" id="btn-write" onclick="setMode('write')">LEAVE WISH</button>
+    <button class="nav-btn" id="btn-draw" onclick="setMode('draw')">DRAW CARD</button>
+    <button class="nav-btn" id="btn-all" onclick="setMode('all')">VIEW WALL</button>
 </nav>
 
 <main class="content" style="padding: 20px; display: flex; flex-direction: column; align-items: center;">
     
     <section id="section-write">
         <div class="ball-stage">
-            <h2 style="color:var(--pixel-accent)">捕捉宝可梦并封存你的祝福</h2>
+            <h2 style="color:var(--pixel-accent)">CATCH & SEAL YOUR WISH</h2>
             <div class="ball-wrapper" onclick="handleSend()">
                 <div class="ball-glow"></div>
                 <div class="ball-img" id="ball-main"></div>
             </div>
-            <div id="success-msg">成功捕捉！寄语已封存！</div>
+            <div id="success-msg">GOTCHA! RECORDED!</div>
         </div>
         <div class="panel">
-            <input type="text" id="nameIn" placeholder="训练家姓名...">
-            <textarea id="msgIn" rows="4" placeholder="写下你的祝福..."></textarea>
-            <button class="pixel-btn" onclick="handleSend()">[ 点击精灵球封存 ]</button>
+            <input type="text" id="nameIn" placeholder="TRAINER NAME...">
+            <textarea id="msgIn" rows="4" placeholder="LEAVE A WISH..."></textarea>
+            <button class="pixel-btn" onclick="handleSend()">[ CLICK BALL TO SEAL ]</button>
         </div>
     </section>
 
     <section id="section-draw" class="hidden" style="text-align: center;">
         <div class="ball-stage">
-            <h2 style="color:var(--pixel-accent)">收藏家之盒</h2>
+            <h2 style="color:var(--pixel-accent)">COLLECTOR'S BOX</h2>
             <div class="ball-wrapper" onclick="drawOne()">
                 <div class="ball-glow" style="background: radial-gradient(circle, rgba(59,76,202,0.3) 0%, transparent 70%);"></div>
                 <div class="ball-img" id="ball-draw"></div>
             </div>
-            <p style="font-size: 1.2rem;">点击精灵球随机召唤一段回忆</p>
+            <p style="font-size: 1.2rem;">TAP BALL TO SUMMON A MEMORY</p>
         </div>
     </section>
 
     <section id="section-all" class="hidden">
-        <h2 style="text-align: center; color:var(--pixel-accent); font-size: 2rem;">宝可梦荣誉墙</h2>
+        <h2 style="text-align: center; color:var(--pixel-accent); font-size: 2.2rem;">POKÉ-WALL OF FAME</h2>
         <div class="masonry-grid" id="wall-grid"></div>
     </section>
 </main>
 
 <div id="overlay">
     <div id="draw-target"></div>
-    <button class="nav-btn" style="margin-top: 20px; border:none; padding:10px 40px;" onclick="closeOverlay()">收回精灵球</button>
+    <button class="nav-btn" style="margin-top: 20px; border:none; padding:10px 40px;" onclick="closeOverlay()">RECALL BALL</button>
 </div>
 
 <script>
-    // --- 动态浮动星空脚本 ---
+    // --- 动态漂浮星空脚本 ---
     const sf = document.getElementById('starField');
     const starCount = 120;
-
     for(let i=0; i<starCount; i++){
         const s = document.createElement('div');
         s.className = 'star';
@@ -203,9 +202,9 @@
     }
 
     const pokes = [
-        {n: '皮卡丘', id: 25}, {n: '梦幻', id: 151}, {n: '喷火龙', id: 6},
-        {n: '杰尼龟', id: 7}, {n: '伊布', id: 133}, {n: '妙蛙种子', id: 1},
-        {n: '耿鬼', id: 94}, {n: '路卡利欧', id: 448}, {n: '快龙', id: 149}
+        {n: 'Pikachu', id: 25}, {n: 'Mew', id: 151}, {n: 'Charizard', id: 6},
+        {n: 'Squirtle', id: 7}, {n: 'Eevee', id: 133}, {n: 'Bulbasaur', id: 1},
+        {n: 'Gengar', id: 94}, {n: 'Lucario', id: 448}, {n: 'Dragonite', id: 149}
     ];
 
     function setMode(m) {
@@ -227,10 +226,10 @@
         
         setTimeout(() => {
             const data = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
-            data.push({ id: Date.now(), name: n, msg: m, poke: pokes[Math.floor(Math.random()*pokes.length)] });
+            data.push({ id: Date.now(), name: n.toUpperCase(), msg: m, poke: pokes[Math.floor(Math.random()*pokes.length)] });
             localStorage.setItem('pokeFinalFloating', JSON.stringify(data));
             t.style.opacity = '1';
-            setTimeout(() => t.style.opacity = '0', 2000);
+            setTimeout(() => t.style.opacity = '0', 2500);
             b.classList.remove('shake', 'flash');
             document.getElementById('nameIn').value = '';
             document.getElementById('msgIn').value = '';
@@ -238,7 +237,7 @@
     }
 
     function deleteCard(id) {
-        if(!confirm("确定要永久删除这张卡片吗？")) return;
+        if(!confirm("DELETE THIS CARD FOREVER?")) return;
         let data = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
         data = data.filter(item => item.id !== id);
         localStorage.setItem('pokeFinalFloating', JSON.stringify(data));
@@ -249,7 +248,7 @@
         return `
             <div class="tcg-card ${isFixed ? 'draw-container' : ''}">
                 <div class="card-header">
-                    <span>${c.poke.n}</span>
+                    <span>${c.poke.n.toUpperCase()}</span>
                     <div style="display:flex; align-items:center;">
                         <span style="color:red">HP 999</span>
                         ${showDelete ? `<button class="del-btn" onclick="deleteCard(${c.id})">X</button>` : ''}
@@ -261,7 +260,7 @@
                 <div class="${isFixed ? 'scroll-area' : ''} card-msg-box">
                     ${c.msg}
                 </div>
-                <div class="card-footer">来自训练家: ${c.name}</div>
+                <div class="card-footer">BY TRAINER: ${c.name}</div>
             </div>
         `;
     }
