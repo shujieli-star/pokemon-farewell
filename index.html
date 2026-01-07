@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poké-Farewell: Floating Cosmic Pixel</title>
+    <title>Poké-Farewell: HD Cosmic Journey</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -14,7 +14,7 @@
             --font-game: 'VT323', monospace;
         }
 
-        /* --- 动态浮动星空背景 --- */
+        /* --- 动态浮动星空 --- */
         body {
             margin: 0; padding: 0;
             background: var(--pixel-bg);
@@ -22,107 +22,100 @@
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
-            /* 渐变背景增加深度 */
             background: radial-gradient(circle at center, #0f172a 0%, #050508 100%) no-repeat fixed;
         }
 
-        .stars-container { 
-            position: fixed; inset: 0; z-index: -1; 
-            pointer-events: none; overflow: hidden;
-        }
-
-        /* 星星基础样式 */
+        .stars-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
         .star { 
-            position: absolute; background: white; border-radius: 50%; 
-            opacity: 0.8;
-            animation: 
-                twinkle var(--t-duration) infinite ease-in-out,
-                floatMove var(--f-duration) infinite linear;
+            position: absolute; background: white; border-radius: 50%; opacity: 0.8;
+            animation: twinkle var(--t-duration) infinite ease-in-out, floatMove var(--f-duration) infinite linear;
         }
-
-        /* 闪烁动画 */
-        @keyframes twinkle { 
-            0%, 100% { opacity: 0.3; transform: scale(1); } 
-            50% { opacity: 1; transform: scale(1.4); } 
-        }
-
-        /* 浮动位移动画：让星星在小范围内缓慢漂移 */
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.4); } }
         @keyframes floatMove {
             0% { transform: translate(0, 0); }
-            25% { transform: translate(var(--mx), var(--my)); }
-            50% { transform: translate(calc(var(--mx) * -1), calc(var(--my) * 1.5)); }
-            75% { transform: translate(calc(var(--mx) * 1.2), calc(var(--my) * -1)); }
+            50% { transform: translate(var(--mx), var(--my)); }
             100% { transform: translate(0, 0); }
         }
 
-        /* --- UI 样式 (保持像素风格) --- */
+        /* --- 导航 --- */
         .nav {
             position: sticky; top: 0; width: 100%; padding: 15px 0;
             display: flex; justify-content: center; gap: 15px; z-index: 100;
-            background: rgba(0, 0, 0, 0.8); border-bottom: 4px solid #333;
+            background: rgba(0, 0, 0, 0.85); border-bottom: 4px solid #333;
         }
         .nav-btn {
             background: #000; border: 2px solid white; color: white;
             padding: 8px 16px; font-family: var(--font-game); font-size: 1.4rem;
-            cursor: pointer; transition: 0.2s; image-rendering: pixelated;
+            cursor: pointer; transition: 0.2s; border-radius: 4px;
         }
-        .nav-btn.active { background: var(--pixel-blue); color: var(--pixel-accent); box-shadow: 4px 4px 0 #000; }
+        .nav-btn.active { background: var(--pixel-blue); color: var(--pixel-accent); box-shadow: 0 0 15px var(--pixel-blue); }
 
-        /* 精灵球交互区 */
+        /* --- HD 精灵球设计 --- */
         .ball-stage { display: flex; flex-direction: column; align-items: center; margin: 40px 0; }
-        .ball-wrapper { position: relative; width: 260px; height: 260px; cursor: pointer; }
+        .ball-wrapper { position: relative; width: 280px; height: 280px; cursor: pointer; }
+        
+        /* 微微的白光呼吸感 */
         .ball-glow {
-            position: absolute; inset: -20px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
-            animation: auraPulse 2s infinite alternate;
+            position: absolute; inset: -40px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            animation: auraPulse 3s infinite alternate;
             z-index: 1;
         }
+
         .ball-img {
             position: relative; width: 100%; height: 100%;
+            /* 使用更高分辨率的素材，移除 pixelated 滤镜 */
             background: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png') no-repeat center/contain;
-            image-rendering: pixelated; z-index: 2; transition: 0.3s;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.4)) contrast(1.1);
+            z-index: 2; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* 成功特效 */
-        .shake { animation: shakeBall 0.5s both; }
-        .flash { animation: flashEffect 0.6s ease-out; }
-        @keyframes auraPulse { from { opacity: 0.2; transform: scale(0.9); } to { opacity: 0.6; transform: scale(1.1); } }
-        @keyframes shakeBall {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
-        }
-        @keyframes flashEffect {
-            0% { filter: brightness(1); }
-            50% { filter: brightness(10); }
-            100% { filter: brightness(1); }
+        /* 成功特效：捕捉感震动 + 高级爆光 */
+        .ball-catch-success { animation: catchSuccess 0.8s ease-in-out; }
+        
+        @keyframes auraPulse { from { opacity: 0.2; transform: scale(0.85); } to { opacity: 0.6; transform: scale(1.1); } }
+        
+        @keyframes catchSuccess {
+            0% { transform: scale(1); filter: brightness(1); }
+            20% { transform: scale(0.8) rotate(-15deg); }
+            40% { transform: scale(1.2) rotate(15deg); filter: brightness(5); }
+            60% { transform: scale(1) rotate(-5deg); filter: brightness(2); }
+            100% { transform: scale(1) rotate(0); filter: brightness(1); }
         }
 
-        #success-msg { color: var(--pixel-accent); font-size: 1.8rem; margin-top: 15px; opacity: 0; transition: 0.5s; font-weight: bold; }
+        #success-msg { color: var(--pixel-accent); font-size: 2rem; margin-top: 15px; opacity: 0; transition: 0.5s; font-weight: bold; }
 
-        /* 像素卡片样式 */
-        .tcg-card {
-            background: linear-gradient(135deg, #fce38a, #f9ca24);
-            border: 6px solid #444; border-radius: 4px; padding: 12px; color: #333;
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.5); break-inside: avoid; margin-bottom: 25px;
-        }
-        .card-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.4rem; border-bottom: 2px solid #333; padding-bottom: 4px; }
-        .card-img-frame { background: #fff; border: 3px solid #333; margin: 8px 0; height: 160px; display: flex; align-items: center; justify-content: center; }
-        .card-img-frame img { height: 140px; image-rendering: pixelated; }
-        .card-msg-box { background: rgba(255,255,255,0.8); border: 2px solid #333; padding: 10px; font-size: 1.2rem; line-height: 1.2; word-wrap: break-word; }
-        .card-footer { text-align: right; margin-top: 8px; font-weight: bold; font-size: 0.9rem; border-top: 1px solid #333; padding-top: 4px; }
-
-        .masonry-grid { column-count: 3; column-gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        /* --- 瀑布流布局 (一排四列) --- */
+        .masonry-grid { column-count: 4; column-gap: 15px; padding: 20px; max-width: 1450px; margin: 0 auto; }
+        @media (max-width: 1200px) { .masonry-grid { column-count: 3; } }
         @media (max-width: 900px) { .masonry-grid { column-count: 2; } }
         @media (max-width: 600px) { .masonry-grid { column-count: 1; } }
 
-        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; flex-direction: column; }
-        .draw-container { width: 320px; height: 480px; display: flex; flex-direction: column; }
-        .scroll-area { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
+        /* --- TCG 卡片设计 (高清像素风) --- */
+        .tcg-card {
+            width: 100%; background: linear-gradient(135deg, #fce38a, #f9ca24);
+            border: 6px solid #444; border-radius: 8px; padding: 12px; color: #333;
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.5); break-inside: avoid; margin-bottom: 25px;
+            display: flex; flex-direction: column; box-sizing: border-box;
+        }
+        .card-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.4rem; border-bottom: 2px solid #333; }
+        .card-img-frame { background: #fff; border: 3px solid #333; margin: 8px 0; height: 160px; display: flex; align-items: center; justify-content: center; }
+        .card-img-frame img { height: 140px; }
+        .card-msg-box { background: rgba(255,255,255,0.85); border: 2px solid #333; padding: 10px; font-size: 1.2rem; line-height: 1.2; word-wrap: break-word; flex-grow: 1;}
+        .card-footer { text-align: right; margin-top: 8px; font-weight: bold; font-size: 0.9rem; border-top: 1px solid #333; padding-top: 4px; }
 
-        .panel { background: #000; border: 4px solid #fff; padding: 25px; width: 320px; margin: 0 auto; }
-        input, textarea { width: 100%; background: #222; border: 2px solid #555; color: #fff; padding: 10px; margin-bottom: 15px; font-family: var(--font-game); font-size: 1.2rem; box-sizing: border-box; }
+        /* 弹窗设计 */
+        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: none; justify-content: center; align-items: center; z-index: 1000; flex-direction: column; }
+        .draw-container { width: 340px; height: 520px; box-shadow: 0 0 50px var(--pixel-accent); }
+        .scroll-area { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
+        .scroll-area::-webkit-scrollbar { width: 6px; }
+        .scroll-area::-webkit-scrollbar-thumb { background: #3b4cca; border-radius: 10px; }
+
+        .panel { background: #000; border: 4px solid #fff; padding: 25px; width: 320px; margin: 0 auto; box-shadow: 10px 10px 0 rgba(0,0,0,0.5); }
+        input, textarea { width: 100%; background: #111; border: 2px solid #444; color: #fff; padding: 10px; margin-bottom: 15px; font-family: var(--font-game); font-size: 1.2rem; box-sizing: border-box; outline: none; }
+        input:focus, textarea:focus { border-color: var(--pixel-accent); }
         .pixel-btn { width: 100%; padding: 12px; background: var(--pixel-accent); border: none; cursor: pointer; font-family: var(--font-game); font-size: 1.4rem; font-weight: bold; }
+        .pixel-btn:hover { background: #fff; }
 
         .hidden { display: none; }
     </style>
@@ -132,92 +125,76 @@
 <div class="stars-container" id="starField"></div>
 
 <nav class="nav">
-    <button class="nav-btn active" id="btn-write" onclick="setMode('write')">LEAVE WISH</button>
-    <button class="nav-btn" id="btn-draw" onclick="setMode('draw')">DRAW CARD</button>
-    <button class="nav-btn" id="btn-all" onclick="setMode('all')">VIEW WALL</button>
+    <button class="nav-btn active" id="btn-write" onclick="setMode('write')">SIGN WISH</button>
+    <button class="nav-btn" id="btn-draw" onclick="setMode('draw')">LUCKY DRAW</button>
+    <button class="nav-btn" id="btn-all" onclick="setMode('all')">THE WALL</button>
 </nav>
 
 <main class="content" style="padding: 20px; display: flex; flex-direction: column; align-items: center;">
     
     <section id="section-write">
         <div class="ball-stage">
-            <h2 style="color:var(--pixel-accent)">GET A POKÉMON & SEAL YOUR WISH</h2>
+            <h2 style="color:var(--pixel-accent); letter-spacing: 1.5px;">HD POKÉ-SUMMONER</h2>
             <div class="ball-wrapper" onclick="handleSend()">
                 <div class="ball-glow"></div>
                 <div class="ball-img" id="ball-main"></div>
             </div>
-            <div id="success-msg">GOTCHA! RECORDED!</div>
+            <div id="success-msg">GOTCHA! SEALED!</div>
         </div>
         <div class="panel">
             <input type="text" id="nameIn" placeholder="TRAINER NAME...">
-            <textarea id="msgIn" rows="4" placeholder="WISH FOR OUR FRIEND..."></textarea>
-            <button class="pixel-btn" onclick="handleSend()">[ CLICK BALL TO SEAL ]</button>
+            <textarea id="msgIn" rows="4" placeholder="SEND YOUR BLESSINGS..."></textarea>
+            <button class="pixel-btn" onclick="handleSend()">[ CLICK BALL TO CAPTURE ]</button>
         </div>
     </section>
 
     <section id="section-draw" class="hidden" style="text-align: center;">
         <div class="ball-stage">
-            <h2 style="color:var(--pixel-accent)">COLLECTOR'S BOX</h2>
+            <h2 style="color:var(--pixel-accent)">SUMMON LEGEND</h2>
             <div class="ball-wrapper" onclick="drawOne()">
-                <div class="ball-glow" style="background: radial-gradient(circle, rgba(59,76,202,0.3) 0%, transparent 70%);"></div>
+                <div class="ball-glow" style="background: radial-gradient(circle, rgba(59,76,202,0.4) 0%, transparent 70%);"></div>
                 <div class="ball-img" id="ball-draw"></div>
             </div>
-            <p style="font-size: 1.4rem;">TAP THE BALL TO REVEAL A MEMORY</p>
+            <p style="font-size: 1.5rem; margin-top: 20px;">TAP TO SUMMON A COLLEAGUE'S WISH</p>
         </div>
     </section>
 
     <section id="section-all" class="hidden">
-        <h2 style="text-align: center; color:var(--pixel-accent); font-size: 2.2rem;">THE POKÉ-WALL OF FAME</h2>
+        <h2 style="text-align: center; color:var(--pixel-accent); font-size: 2.5rem; margin-bottom: 30px;">THE POKÉ-WALL OF FAME</h2>
         <div class="masonry-grid" id="wall-grid"></div>
     </section>
 </main>
 
 <div id="overlay">
     <div id="draw-target"></div>
-    <button class="nav-btn" style="margin-top: 20px; border:none; padding:10px 40px;" onclick="closeOverlay()">RECALL</button>
+    <button class="nav-btn" style="margin-top: 25px; border:none; padding:12px 50px;" onclick="closeOverlay()">RECALL</button>
 </div>
 
 <script>
-    // --- 动态浮动星空脚本 ---
+    // 动态漂浮星空
     const sf = document.getElementById('starField');
-    const starCount = 120; // 星星数量
-
+    const starCount = 130;
     for(let i=0; i<starCount; i++){
         const s = document.createElement('div');
         s.className = 'star';
-        
-        // 随机属性
-        const size = Math.random() * 3 + 1; // 星星大小 1-4px
-        const x = Math.random() * 100; // 初始X位置
-        const y = Math.random() * 100; // 初始Y位置
-        
-        // 运动幅度 (mx, my)
-        const mx = (Math.random() - 0.5) * 50; // 左右漂移范围 -25px 到 25px
-        const my = (Math.random() - 0.5) * 50; // 上下漂移范围
-        
-        // 持续时间：大星星（近处）移动快，小星星（远处）移动慢
-        const fDuration = (5 / size) * (15 + Math.random() * 10) + 's';
+        const size = Math.random() * 3 + 1;
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const mx = (Math.random() - 0.5) * 60;
+        const my = (Math.random() - 0.5) * 60;
+        const fDuration = (5 / size) * (18 + Math.random() * 10) + 's';
         const tDuration = (Math.random() * 2 + 1) + 's';
-
-        s.style.width = size + 'px';
-        s.style.height = size + 'px';
-        s.style.left = x + '%';
-        s.style.top = y + '%';
-        
-        // 设置 CSS 变量供动画使用
-        s.style.setProperty('--mx', mx + 'px');
-        s.style.setProperty('--my', my + 'px');
-        s.style.setProperty('--f-duration', fDuration);
-        s.style.setProperty('--t-duration', tDuration);
-        
+        s.style.width = size + 'px'; s.style.height = size + 'px';
+        s.style.left = x + '%'; s.style.top = y + '%';
+        s.style.setProperty('--mx', mx + 'px'); s.style.setProperty('--my', my + 'px');
+        s.style.setProperty('--f-duration', fDuration); s.style.setProperty('--t-duration', tDuration);
         sf.appendChild(s);
     }
 
-    // --- 逻辑部分 ---
     const pokes = [
         {n: 'Pikachu', id: 25}, {n: 'Mew', id: 151}, {n: 'Charizard', id: 6},
         {n: 'Squirtle', id: 7}, {n: 'Eevee', id: 133}, {n: 'Bulbasaur', id: 1},
-        {n: 'Gengar', id: 94}, {n: 'Lucario', id: 448}, {n: 'Dragonite', id: 149}
+        {n: 'Snorlax', id: 143}, {n: 'Gengar', id: 94}, {n: 'Lucario', id: 448}
     ];
 
     function setMode(m) {
@@ -236,20 +213,21 @@
         const b = document.getElementById('ball-main');
         const t = document.getElementById('success-msg');
         
-        b.classList.add('shake', 'flash');
+        // 捕捉特效
+        b.classList.add('ball-catch-success');
         
         setTimeout(() => {
-            const data = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
+            const data = JSON.parse(localStorage.getItem('pokeFarewellHDV2') || '[]');
             data.push({ id: Date.now(), name: n.toUpperCase(), msg: m, poke: pokes[Math.floor(Math.random()*pokes.length)] });
-            localStorage.setItem('pokeFinalFloating', JSON.stringify(data));
+            localStorage.setItem('pokeFarewellHDV2', JSON.stringify(data));
             
             t.style.opacity = '1';
-            setTimeout(() => t.style.opacity = '0', 2000);
+            setTimeout(() => t.style.opacity = '0', 2500);
             
-            b.classList.remove('shake', 'flash');
+            b.classList.remove('ball-catch-success');
             document.getElementById('nameIn').value = '';
             document.getElementById('msgIn').value = '';
-        }, 600);
+        }, 800);
     }
 
     function createCard(c, isFixed) {
@@ -257,7 +235,7 @@
             <div class="tcg-card ${isFixed ? 'draw-container' : ''}">
                 <div class="card-header">
                     <span>${c.poke.n.toUpperCase()}</span>
-                    <span style="color:red">HP 999</span>
+                    <span style="color:#ff4757">HP 999</span>
                 </div>
                 <div class="card-img-frame">
                     <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${c.poke.id}.png">
@@ -265,18 +243,18 @@
                 <div class="${isFixed ? 'scroll-area' : ''} card-msg-box">
                     ${c.msg}
                 </div>
-                <div class="card-footer">BY TRAINER: ${c.name}</div>
+                <div class="card-footer">TRAINER: ${c.name}</div>
             </div>
         `;
     }
 
     function renderWall() {
-        const data = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
+        const data = JSON.parse(localStorage.getItem('pokeFarewellHDV2') || '[]');
         document.getElementById('wall-grid').innerHTML = data.map(c => createCard(c, false)).join('');
     }
 
     function drawOne() {
-        const data = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
+        const data = JSON.parse(localStorage.getItem('pokeFarewellHDV2') || '[]');
         if(data.length === 0) return;
         const b = document.getElementById('ball-draw');
         b.style.transform = 'scale(1.5) rotate(720deg)';
@@ -284,8 +262,8 @@
             const c = data[Math.floor(Math.random()*data.length)];
             document.getElementById('draw-target').innerHTML = createCard(c, true);
             document.getElementById('overlay').style.display = 'flex';
-            b.style.transform = 'scale(1) rotate(0)';
-        }, 600);
+            b.style.transform = '';
+        }, 800);
     }
 
     function closeOverlay() { document.getElementById('overlay').style.display = 'none'; }
