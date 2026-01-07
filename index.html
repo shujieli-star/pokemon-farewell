@@ -10,8 +10,8 @@
             --pixel-bg: #050508;
             --pixel-accent: #ffcb05; 
             --pixel-blue: #3b4cca;
-            --font-pixel: 'VT323', monospace;
-            --font-content: "SF Mono", "Monaco", "PingFang SC", "Microsoft YaHei", "Heiti SC", monospace;
+            --font-ui: 'VT323', monospace;
+            --font-content: "SF Mono", "Monaco", "PingFang SC", "Microsoft YaHei", monospace;
         }
 
         body {
@@ -21,7 +21,7 @@
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
-            font-family: var(--font-pixel);
+            font-family: var(--font-content);
         }
 
         /* --- 动态星空 --- */
@@ -30,7 +30,7 @@
         @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.4); } }
         @keyframes floatMove { 0% { transform: translate(0, 0); } 50% { transform: translate(var(--mx), var(--my)); } 100% { transform: translate(0, 0); } }
 
-        /* --- 导航 --- */
+        /* --- 导航 UI --- */
         .nav {
             position: sticky; top: 0; width: 100%; padding: 12px 0;
             display: flex; justify-content: center; gap: 15px; z-index: 100;
@@ -38,7 +38,7 @@
         }
         .nav-btn {
             background: #000; border: 2px solid white; color: white;
-            padding: 8px 24px; font-family: var(--font-pixel) !important; 
+            padding: 8px 24px; font-family: var(--font-ui) !important; 
             font-size: 1.8rem; text-transform: uppercase; cursor: pointer; transition: 0.2s;
         }
         .nav-btn.active { background: var(--pixel-blue); color: var(--pixel-accent); box-shadow: 4px 4px 0 #000; }
@@ -58,13 +58,12 @@
         }
 
         #success-hint {
-            color: var(--pixel-accent); font-family: var(--font-pixel);
+            color: var(--pixel-accent); font-family: var(--font-ui);
             font-size: 2.2rem; margin-top: 15px; opacity: 0;
             transition: opacity 0.4s ease-in-out; font-weight: bold;
             text-transform: uppercase; letter-spacing: 2px;
         }
 
-        /* 捕捉震动动画 */
         .shake { animation: shakeBall 0.6s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shakeBall {
             0%, 100% { transform: translateX(0); }
@@ -73,38 +72,18 @@
         }
         @keyframes auraPulse { from { opacity: 0.2; transform: scale(0.9); } to { opacity: 0.5; transform: scale(1.1); } }
 
-        /* --- 卡片样式 --- */
+        /* --- 卡片与布局 --- */
         .tcg-card {
             background: linear-gradient(135deg, #fce38a, #f9ca24);
             border: 5px solid #444; border-radius: 4px; padding: 15px; color: #333;
             box-shadow: 6px 6px 0 rgba(0,0,0,0.5); break-inside: avoid; margin-bottom: 25px;
             position: relative; width: 100%; box-sizing: border-box;
         }
-        .card-header { 
-            display: flex; justify-content: space-between; font-weight: bold; 
-            font-family: var(--font-pixel); font-size: 2rem; border-bottom: 2.5px solid #333; 
-            padding-bottom: 5px; align-items: center; text-transform: uppercase;
-        }
+        .card-header { display: flex; justify-content: space-between; font-weight: bold; font-family: var(--font-ui); font-size: 1.8rem; border-bottom: 2.5px solid #333; padding-bottom: 5px; align-items: center; text-transform: uppercase; }
         .card-img-frame { background: #fff; border: 2.5px solid #333; margin: 8px 0; height: 160px; display: flex; align-items: center; justify-content: center; }
         .card-img-frame img { height: 140px; image-rendering: pixelated; }
-        .card-msg-box { 
-            background: rgba(255,255,255,0.85); 
-            border: 2px solid #333; 
-            padding: 15px; 
-            font-family: var(--font-content); 
-            font-size: 1.1rem; 
-            line-height: 1.6; 
-            word-wrap: break-word; 
-            min-height: 80px;
-            color: #111;
-            letter-spacing: 0.5px;
-            text-align: left;
-        }
-        .card-footer { 
-            text-align: right; margin-top: 10px; font-weight: bold; 
-            font-family: var(--font-pixel); font-size: 1.4rem; 
-            border-top: 1px solid #333; padding-top: 6px; text-transform: uppercase;
-        }
+        .card-msg-box { background: rgba(255,255,255,0.85); border: 2px solid #333; padding: 15px; font-family: var(--font-content); font-size: 1.1rem; line-height: 1.6; word-wrap: break-word; min-height: 80px; color: #111; text-align: left; }
+        .card-footer { text-align: right; margin-top: 10px; font-weight: bold; font-family: var(--font-ui); font-size: 1.2rem; border-top: 1px solid #333; padding-top: 6px; text-transform: uppercase; }
 
         .masonry-grid { column-count: 4; column-gap: 20px; padding: 20px; max-width: 1450px; margin: 0 auto; }
         @media (max-width: 1200px) { .masonry-grid { column-count: 3; } }
@@ -112,22 +91,14 @@
         @media (max-width: 600px) { .masonry-grid { column-count: 1; } }
 
         .panel { background: #000; border: 4px solid #fff; padding: 30px; width: 400px; margin: 0 auto; box-shadow: 10px 10px 0 rgba(0,0,0,0.5); }
-        input, textarea { 
-            width: 100%; background: #222; border: 2px solid #555; color: #fff; padding: 12px; 
-            margin-bottom: 15px; font-family: var(--font-content); font-size: 1.1rem; 
-            box-sizing: border-box; outline: none; line-height: 1.5;
-        }
-        .pixel-btn { 
-            width: 100%; padding: 15px; background: var(--pixel-accent); border: none; 
-            cursor: pointer; font-family: var(--font-pixel) !important; 
-            font-size: 2.2rem; font-weight: bold; text-transform: uppercase;
-        }
+        input, textarea { width: 100%; background: #222; border: 2px solid #555; color: #fff; padding: 12px; margin-bottom: 15px; font-family: var(--font-content); font-size: 1.1rem; box-sizing: border-box; outline: none; line-height: 1.5; }
+        .pixel-btn { width: 100%; padding: 15px; background: var(--pixel-accent); border: none; cursor: pointer; font-family: var(--font-ui) !important; font-size: 2.2rem; font-weight: bold; text-transform: uppercase; }
 
         #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; flex-direction: column; }
         .draw-container { width: 400px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(255, 203, 5, 0.4); }
         .scroll-area { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
         .hidden { display: none; }
-        .del-btn { background: #ff4757; color: white; border: 2px solid #333; font-family: var(--font-pixel); cursor: pointer; font-size: 1.1rem; padding: 0 8px; margin-left: 8px; }
+        .del-btn { background: #ff4757; color: white; border: 2px solid #333; font-family: var(--font-ui); cursor: pointer; font-size: 1.1rem; padding: 0 8px; margin-left: 8px; }
     </style>
 </head>
 <body>
@@ -181,6 +152,7 @@
 </div>
 
 <script>
+    // 星空背景逻辑
     const sf = document.getElementById('starField');
     const starCount = 130;
     for(let i=0; i<starCount; i++){
@@ -200,11 +172,28 @@
         sf.appendChild(s);
     }
 
+    // 扩充宝可梦列表 (共20只)
     const pokes = [
         {n: 'Pikachu', id: 25}, {n: 'Mew', id: 151}, {n: 'Charizard', id: 6},
         {n: 'Squirtle', id: 7}, {n: 'Eevee', id: 133}, {n: 'Bulbasaur', id: 1},
-        {n: 'Gengar', id: 94}, {n: 'Lucario', id: 448}, {n: 'Dragonite', id: 149}
+        {n: 'Gengar', id: 94}, {n: 'Lucario', id: 448}, {n: 'Dragonite', id: 149},
+        {n: 'Snorlax', id: 143}, {n: 'Lapras', id: 131}, {n: 'Arcanine', id: 59},
+        {n: 'Alakazam', id: 65}, {n: 'Gyarados', id: 130}, {n: 'Jigglypuff', id: 39},
+        {n: 'Articuno', id: 144}, {n: 'Zapdos', id: 145}, {n: 'Moltres', id: 146},
+        {n: 'Mewtwo', id: 150}, {n: 'Rayquaza', id: 384}
     ];
+
+    // 哈希算法：根据姓名分配宝可梦
+    function getPokeByTrainerName(name) {
+        let hash = 0;
+        const cleanName = name.trim().toUpperCase();
+        for (let i = 0; i < cleanName.length; i++) {
+            hash = ((hash << 5) - hash) + cleanName.charCodeAt(i);
+            hash |= 0;
+        }
+        const index = Math.abs(hash) % pokes.length;
+        return pokes[index];
+    }
 
     function setMode(m) {
         document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
@@ -219,25 +208,23 @@
         const m = document.getElementById('msgIn').value.trim();
         if(!n || !m) return;
 
+        // 根据姓名决定宝可梦
+        const assignedPoke = getPokeByTrainerName(n);
+
         const ball = document.getElementById('ball-main');
         const hint = document.getElementById('success-hint');
         
-        // 1. 保存数据
         const data = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
-        data.push({ id: Date.now(), name: n.toUpperCase(), msg: m, poke: pokes[Math.floor(Math.random()*pokes.length)] });
+        data.push({ id: Date.now(), name: n.toUpperCase(), msg: m, poke: assignedPoke });
         localStorage.setItem('pokeFinalFloating', JSON.stringify(data));
 
-        // 2. 按钮触发后，精灵球开始震动反馈
         ball.classList.add('shake');
         
         setTimeout(() => {
             ball.classList.remove('shake');
-            // 3. 显示成功文字
             hint.style.opacity = '1';
             document.getElementById('nameIn').value = '';
             document.getElementById('msgIn').value = '';
-            
-            // 2.5秒后自动隐藏提示
             setTimeout(() => { hint.style.opacity = '0'; }, 2500);
         }, 600);
     }
