@@ -11,7 +11,6 @@
             --pixel-accent: #ffcb05; 
             --pixel-blue: #3b4cca;
             --tcg-yellow: #f9ca24;
-            /* 关键修改：VT323 放在最前面，保证英文好看 */
             --font-game: 'VT323', 'DotGothic16', monospace;
         }
 
@@ -54,22 +53,22 @@
 
         /* --- UI 样式 --- */
         .nav {
-            position: sticky; top: 0; width: 100%; padding: 15px 0;
+            position: sticky; top: 0; width: 100%; padding: 12px 0;
             display: flex; justify-content: center; gap: 15px; z-index: 100;
-            background: rgba(0, 0, 0, 0.8); border-bottom: 4px solid #333;
+            background: rgba(0, 0, 0, 0.85); border-bottom: 3px solid #333;
         }
         .nav-btn {
             background: #000; border: 2px solid white; color: white;
-            padding: 8px 20px; font-family: var(--font-game); font-size: 1.5rem;
+            padding: 8px 24px; font-family: var(--font-game); font-size: 1.5rem;
             cursor: pointer; transition: 0.2s; image-rendering: pixelated;
         }
         .nav-btn.active { background: var(--pixel-blue); color: var(--pixel-accent); box-shadow: 4px 4px 0 #000; }
 
-        .ball-stage { display: flex; flex-direction: column; align-items: center; margin: 40px 0; }
-        .ball-wrapper { position: relative; width: 260px; height: 260px; cursor: pointer; }
+        .ball-stage { display: flex; flex-direction: column; align-items: center; margin: 30px 0; }
+        .ball-wrapper { position: relative; width: 240px; height: 240px; cursor: pointer; }
         .ball-glow {
-            position: absolute; inset: -20px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
+            position: absolute; inset: -15px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
             animation: auraPulse 2s infinite alternate;
             z-index: 1;
         }
@@ -81,37 +80,50 @@
 
         .shake { animation: shakeBall 0.5s both; }
         .flash { animation: flashEffect 0.6s ease-out; }
-        @keyframes auraPulse { from { opacity: 0.2; transform: scale(0.9); } to { opacity: 0.6; transform: scale(1.1); } }
+        @keyframes auraPulse { from { opacity: 0.2; transform: scale(0.9); } to { opacity: 0.5; transform: scale(1.1); } }
         @keyframes shakeBall {
             0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
         }
         @keyframes flashEffect {
             0% { filter: brightness(1); }
-            50% { filter: brightness(10); }
+            50% { filter: brightness(8); }
             100% { filter: brightness(1); }
         }
 
-        #success-msg { color: var(--pixel-accent); font-size: 2rem; margin-top: 15px; opacity: 0; transition: 0.5s; font-weight: bold; }
+        #success-msg { color: var(--pixel-accent); font-size: 1.8rem; margin-top: 10px; opacity: 0; transition: 0.5s; font-weight: bold; }
 
         /* --- 像素 TCG 卡片样式 --- */
         .tcg-card {
             background: linear-gradient(135deg, #fce38a, #f9ca24);
-            border: 6px solid #444; border-radius: 4px; padding: 12px; color: #333;
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.5); break-inside: avoid; margin-bottom: 25px;
+            border: 5px solid #444; border-radius: 4px; padding: 12px; color: #333;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.5); break-inside: avoid; margin-bottom: 25px;
             position: relative; width: 100%; box-sizing: border-box;
         }
-        .card-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: 4px; align-items: center;}
-        .card-img-frame { background: #fff; border: 3px solid #333; margin: 8px 0; height: 160px; display: flex; align-items: center; justify-content: center; }
+        .card-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.5rem; border-bottom: 2px solid #333; padding-bottom: 3px; align-items: center;}
+        .card-img-frame { background: #fff; border: 2px solid #333; margin: 8px 0; height: 160px; display: flex; align-items: center; justify-content: center; }
         .card-img-frame img { height: 140px; image-rendering: pixelated; }
-        .card-msg-box { background: rgba(255,255,255,0.8); border: 2px solid #333; padding: 10px; font-size: 1.3rem; line-height: 1.2; word-wrap: break-word; }
+        
+        /* 关键优化：基础字号适配英文，但通过 font-size-adjust 让中文在视觉上更小 */
+        .card-msg-box { 
+            background: rgba(255,255,255,0.75); 
+            border: 2px solid #333; 
+            padding: 10px; 
+            font-size: 1.3rem; /* 英文看起来很大 */
+            font-size-adjust: 0.45; /* 核心：视觉上缩小中文这种“大写感”强的字符 */
+            line-height: 1.2; 
+            word-wrap: break-word; 
+            letter-spacing: 0.2px; 
+            min-height: 60px;
+        }
+        
         .card-footer { text-align: right; margin-top: 8px; font-weight: bold; font-size: 1rem; border-top: 1px solid #333; padding-top: 4px; }
 
         .del-btn {
             background: #ff4757; color: white; border: 2px solid #333;
-            font-family: var(--font-game); cursor: pointer; font-size: 0.8rem;
-            padding: 2px 6px; margin-left: 10px; box-shadow: 2px 2px 0 #000;
+            font-family: var(--font-game); cursor: pointer; font-size: 0.7rem;
+            padding: 2px 6px; margin-left: 8px; box-shadow: 1px 1px 0 #000;
         }
 
         /* --- 瀑布流布局 (4列) --- */
@@ -120,13 +132,41 @@
         @media (max-width: 800px) { .masonry-grid { column-count: 2; } }
         @media (max-width: 600px) { .masonry-grid { column-count: 1; } }
 
+        /* --- 抽卡 Overlay --- */
         #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; flex-direction: column; }
-        .draw-container { width: 340px; height: 480px; display: flex; flex-direction: column; }
+        .draw-container { 
+            width: 380px; 
+            height: 540px; 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: 0 0 30px rgba(255, 203, 5, 0.4);
+        }
         .scroll-area { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
 
-        .panel { background: #000; border: 4px solid #fff; padding: 25px; width: 320px; margin: 0 auto; }
-        input, textarea { width: 100%; background: #222; border: 2px solid #555; color: #fff; padding: 10px; margin-bottom: 15px; font-family: var(--font-game); font-size: 1.2rem; box-sizing: border-box; }
-        .pixel-btn { width: 100%; padding: 12px; background: var(--pixel-accent); border: none; cursor: pointer; font-family: var(--font-game); font-size: 1.5rem; font-weight: bold; }
+        /* --- 输入面板 --- */
+        .panel { 
+            background: #000; 
+            border: 4px solid #fff; 
+            padding: 30px; 
+            width: 380px; 
+            margin: 0 auto; 
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.5);
+        }
+        input, textarea { 
+            width: 100%; 
+            background: #222; 
+            border: 2px solid #555; 
+            color: #fff; 
+            padding: 12px; 
+            margin-bottom: 15px; 
+            font-family: var(--font-game); 
+            font-size: 1.3rem; /* 英文输入框字号保持 */
+            font-size-adjust: 0.45; /* 输入中文时视觉缩小 */
+            box-sizing: border-box; 
+            outline: none;
+        }
+        input:focus, textarea:focus { border-color: var(--pixel-accent); }
+        .pixel-btn { width: 100%; padding: 15px; background: var(--pixel-accent); border: none; cursor: pointer; font-family: var(--font-game); font-size: 1.6rem; font-weight: bold; }
 
         .hidden { display: none; }
     </style>
@@ -145,7 +185,7 @@
     
     <section id="section-write">
         <div class="ball-stage">
-            <h2 style="color:var(--pixel-accent)">GET A POKÉMON & SEAL YOUR WISH</h2>
+            <h2 style="color:var(--pixel-accent); font-size: 2.2rem;">GET A POKÉMON & SEAL YOUR WISH</h2>
             <div class="ball-wrapper" onclick="handleSend()">
                 <div class="ball-glow"></div>
                 <div class="ball-img" id="ball-main"></div>
@@ -154,14 +194,14 @@
         </div>
         <div class="panel">
             <input type="text" id="nameIn" placeholder="TRAINER NAME...">
-            <textarea id="msgIn" rows="4" placeholder="WISH FOR OUR FRIEND..."></textarea>
+            <textarea id="msgIn" rows="5" placeholder="WISH FOR OUR FRIEND..."></textarea>
             <button class="pixel-btn" onclick="handleSend()">[ CLICK BALL TO SEAL ]</button>
         </div>
     </section>
 
     <section id="section-draw" class="hidden" style="text-align: center;">
         <div class="ball-stage">
-            <h2 style="color:var(--pixel-accent)">COLLECTOR'S BOX</h2>
+            <h2 style="color:var(--pixel-accent); font-size: 2.2rem;">COLLECTOR'S BOX</h2>
             <div class="ball-wrapper" onclick="drawOne()">
                 <div class="ball-glow" style="background: radial-gradient(circle, rgba(59,76,202,0.3) 0%, transparent 70%);"></div>
                 <div class="ball-img" id="ball-draw"></div>
@@ -171,7 +211,7 @@
     </section>
 
     <section id="section-all" class="hidden">
-        <h2 style="text-align: center; color:var(--pixel-accent); font-size: 2.5rem;">THE POKÉ-WALL OF FAME</h2>
+        <h2 style="text-align: center; color:var(--pixel-accent); font-size: 2.8rem;">THE POKÉ-WALL OF FAME</h2>
         <div class="masonry-grid" id="wall-grid"></div>
     </section>
 </main>
@@ -183,11 +223,11 @@
 
 <script>
     const sf = document.getElementById('starField');
-    const starCount = 120;
+    const starCount = 130;
     for(let i=0; i<starCount; i++){
         const s = document.createElement('div');
         s.className = 'star';
-        const size = Math.random() * 3 + 1;
+        const size = Math.random() * 2.5 + 1;
         const x = Math.random() * 100;
         const y = Math.random() * 100;
         const mx = (Math.random() - 0.5) * 50;
@@ -204,7 +244,8 @@
     const pokes = [
         {n: 'Pikachu', id: 25}, {n: 'Mew', id: 151}, {n: 'Charizard', id: 6},
         {n: 'Squirtle', id: 7}, {n: 'Eevee', id: 133}, {n: 'Bulbasaur', id: 1},
-        {n: 'Gengar', id: 94}, {n: 'Lucario', id: 448}, {n: 'Dragonite', id: 149}
+        {n: 'Gengar', id: 94}, {n: 'Lucario', id: 448}, {n: 'Dragonite', id: 149},
+        {n: 'Snorlax', id: 143}, {n: 'Lapras', id: 131}
     ];
 
     function setMode(m) {
@@ -227,7 +268,7 @@
             data.push({ id: Date.now(), name: n.toUpperCase(), msg: m, poke: pokes[Math.floor(Math.random()*pokes.length)] });
             localStorage.setItem('pokeFinalFloating', JSON.stringify(data));
             t.style.opacity = '1';
-            setTimeout(() => t.style.opacity = '0', 2000);
+            setTimeout(() => t.style.opacity = '0', 2500);
             b.classList.remove('shake', 'flash');
             document.getElementById('nameIn').value = '';
             document.getElementById('msgIn').value = '';
@@ -272,7 +313,7 @@
         const data = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
         if(data.length === 0) return;
         const b = document.getElementById('ball-draw');
-        b.style.transform = 'scale(1.5) rotate(720deg)';
+        b.style.transform = 'scale(1.4) rotate(720deg)';
         setTimeout(() => {
             const c = data[Math.floor(Math.random()*data.length)];
             document.getElementById('draw-target').innerHTML = createCard(c, true, false);
