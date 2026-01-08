@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poké-Farewell: Scroll & Pixel Edition</title>
+    <title>Poké-Farewell: All-Stars Wall</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,7 +23,7 @@
             overflow-x: hidden;
         }
 
-        /* --- 动态星空 (大幅浮动) --- */
+        /* --- 动态星空 --- */
         .stars-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
         .star { 
             position: absolute; background: white; border-radius: 50%; 
@@ -38,20 +38,13 @@
             100% { transform: translate(0, 0); }
         }
 
-        /* --- UI 组件 --- */
+        /* --- UI 样式 --- */
         h2 { font-family: var(--font-pixel) !important; text-transform: uppercase; letter-spacing: 3px; text-shadow: 2px 2px 0 #000; }
         .nav { position: sticky; top: 0; width: 100%; padding: 12px 0; display: flex; justify-content: center; gap: 15px; z-index: 100; background: rgba(0, 0, 0, 0.9); border-bottom: 3px solid #333; }
         .nav-btn { background: #000; border: 2px solid white; color: white; padding: 8px 24px; font-family: var(--font-pixel) !important; font-size: 1.8rem; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
         .nav-btn.active { background: var(--pixel-blue); color: var(--pixel-accent); box-shadow: 4px 4px 0 #000; }
 
-        .ball-stage { display: flex; flex-direction: column; align-items: center; margin: 30px 0; }
-        .ball-wrapper { position: relative; width: 220px; height: 220px; cursor: pointer; }
-        .ball-img { width: 100%; height: 100%; background: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png') no-repeat center/contain; image-rendering: pixelated; }
-        #success-hint { color: var(--pixel-accent); font-family: var(--font-pixel) !important; font-size: 2.2rem; margin-top: 15px; opacity: 0; transition: opacity 0.4s; font-weight: bold; text-transform: uppercase; }
-        .shake { animation: shakeBall 0.6s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shakeBall { 0%, 100% { transform: translateX(0); } 15%, 45%, 75% { transform: translateX(-10px) rotate(-10deg); } 30%, 60%, 90% { transform: translateX(10px) rotate(10deg); } }
-
-        /* --- TCG 卡片：加入 Scroll 功能 --- */
+        /* --- TCG 卡片与滚动条 --- */
         .tcg-card {
             background: linear-gradient(135deg, #fce38a, #f9ca24);
             border: 5px solid #444; border-radius: 4px; padding: 12px; color: #333;
@@ -62,22 +55,11 @@
         .card-img-frame { background: #fff; border: 2.5px solid #333; margin: 8px 0; height: 160px; display: flex; align-items: center; justify-content: center; }
         .card-img-frame img { height: 140px; image-rendering: pixelated; }
         
-        /* 核心修复：长留言滚动条 */
         .card-msg-box { 
-            background: rgba(255,255,255,0.9); 
-            border: 2px solid #333; 
-            padding: 12px; 
-            font-family: var(--font-content) !important; 
-            font-size: 1.05rem; 
-            line-height: 1.5; 
-            color: #111; 
-            text-align: left; 
-            max-height: 200px; /* 超过此高度开启滚动 */
-            overflow-y: auto; 
-            word-wrap: break-word;
+            background: rgba(255,255,255,0.9); border: 2px solid #333; padding: 12px; 
+            font-family: var(--font-content) !important; font-size: 1.05rem; line-height: 1.5; color: #111; 
+            text-align: left; max-height: 200px; overflow-y: auto; word-wrap: break-word;
         }
-
-        /* 滚动条像素风格美化 */
         .card-msg-box::-webkit-scrollbar { width: 8px; }
         .card-msg-box::-webkit-scrollbar-track { background: #eee; }
         .card-msg-box::-webkit-scrollbar-thumb { background: #333; border: 1px solid #eee; }
@@ -85,7 +67,6 @@
         .card-footer { text-align: right; margin-top: 10px; font-family: var(--font-pixel) !important; font-size: 1.2rem; border-top: 1px solid #333; padding-top: 6px; text-transform: uppercase; }
         .del-btn { background: #ff4757; color: white; border: 2px solid #333; font-family: var(--font-pixel) !important; cursor: pointer; font-size: 1.1rem; padding: 0 8px; margin-left: 10px; box-shadow: 2px 2px 0 #000; }
 
-        /* --- 输入面板 --- */
         .panel { background: #000; border: 4px solid #fff; padding: 30px; width: 400px; margin: 0 auto; box-shadow: 10px 10px 0 rgba(0,0,0,0.5); }
         ::placeholder { font-family: var(--font-pixel); color: #888; text-transform: uppercase; }
         input { font-family: var(--font-pixel) !important; font-size: 1.3rem !important; text-transform: uppercase; }
@@ -149,6 +130,9 @@
 </div>
 
 <script>
+    // --- 硬编码数据区域 ---
+    const prefilledData = [{"id":1767821930872,"name":"FELICIA","msg":"Congrats on the move! It’s been great working with you!  I’m certain your creativity and thoughtfulness will be a huge asset in the blue sky world :). Wishing you the best with the new adventure, can’t wait to see the final results!","poke":{"n":"Arcanine","id":59}},{"id":1767821971348,"name":"VANESSA","msg":"I couldn’t ask for a better design partner and lead. You’ve made such an impact on the CoSTL experience and I learned so much from you along the way. I have no doubt you’ll bring the same level of excellence to anything you work on.","poke":{"n":"Mew","id":151}},{"id":1767821984649,"name":"NICK","msg":"I remember first meeting in North Carolina when we went to Toshiba headquarters. You have always been an amazing person to converse with either to bounce ideas off of or just have a friendly chat. You really distinguished yourself in your overall design ability but definitely in your ability to audit the minute details during design reviews :). I am happy we became fast friends during our time working together. I can only wish you the best as the newest traitor to the team!","poke":{"n":"Lucario","id":448}},{"id":1767822002953,"name":"COLLEEN","msg":"Thanks for being an amazing design partner. Your new project is so lucky to have your creative talent and wealth of knowledge! Excited to see what you come up with next and hope we get to work together in the future!","poke":{"n":"Snorlax","id":143}},{"id":1767822552100,"name":"SHUJIE","msg":"英文感觉没法很好的表达我的感谢所以我就直接用中文写了，我毕业开始工作后最幸运最开心的事情就是能和你一起共事三年，能在职业初期遇到这么好的同事/designer/mentor，简直是世界上最最幸运的事情了\n我对山姆的不舍其实完全是因为想和你一起工作，你对我的帮助实在太多太多了，不仅从设计上（学会注重设计细节，更全面的去考虑flow，scenairos），工作上（如何和同事领导沟通相处，怎么去pushback或者推进项目），还有职场上的很多事情你也都事无巨细的教我，我总是感叹为什么会这么幸运能遇到你，遇到一个完美的上级，真的太难得了，你已经是我的职场role model\n所以刚知道你要去新项目的时候真的特别特别难过，但同时又为你开心，可以去做一些有意思的项目了～而且说不定我们还可以再做同一个项目，还能再继续当你的小组员\n总之真的真的很谢谢你，让我看到了什么是一个好的designer，mentor，我也会一直祝福你可以做自己喜欢的东西，可以不用那么累不用所有东西都自己扛着 ^_^\n虽然不是小组员了但可以一直是好朋友，以后要经常一起玩！！我去三番找你约饭哟，我还会多多去sb的office见你的～现在不在一个组了你是不是可以当我的mentor了哈哈哈哈哈哈哈 总之希望你一些都好：）","poke":{"n":"Squirtle","id":7}},{"id":1767822582229,"name":"ERSHAD","msg":"Big thank you as you move to your next team. Working with you has been awesome, and I’ve really enjoyed our time collaborating together.\nYour design skills and the way you lead and deliver always stood out. You brought so much clarity and confidence to the work, and it made a huge difference for the whole team.\nOn a personal note, I’m really glad we became good friends along the way. I’ll definitely miss working closely with you, but I’m excited to see you do great things in your next role.\nWishing you all the best — and let’s definitely stay in touch.","poke":{"n":"Dragonite","id":149}},{"id":1767822619326,"name":"EVAN","msg":"You’re not far from us. After all these years shaping the checkout experience, this totally feels like a milestone. Congrats! \nI always love seeing your designs, so thoughtful and polished every time. And you’re always such a fun, humble teammate to work with.","poke":{"n":"Blastoise","id":9}},{"id":1767822666939,"name":"PRUDHVI","msg":"Thanks for the great collaboration! Really enjoyed working with you and appreciated your UX insights and support. Wishing you the best on your next project!","poke":{"n":"Charmander","id":4}},{"id":1767822680708,"name":"RAIGON","msg":"I will miss you!  you have been fabulous to work with.  So thoughtful and easy to bounce ideas with.  Enjoy your next project!!  I like hearing your stories of torturing you husbund with food choices!  and I will never be able to say your name correctly","poke":{"n":"Rayquaza","id":384}},{"id":1767857871360,"name":"MARCELLE","msg":"I honestly can’t thank you enough for everything you have done for this team and for me. Your ability to remember the tiniest details from conversations years ago always blew me away. Your eye for design and your fun nature brought so much value to this team, and they’ll be missed greatly. I’m incredibly grateful for the time we had to work together. I will miss you, but I will still bug you in the San Bruno office. Wishing you the very best in your new project, Shawn 🙂","poke":{"n":"Bulbasaur","id":1}}];
+
     const pokes = [
         {n: 'Pikachu', id: 25}, {n: 'Charizard', id: 6}, {n: 'Greninja', id: 658},
         {n: 'Lucario', id: 448}, {n: 'Mewtwo', id: 150}, {n: 'Eevee', id: 133},
@@ -162,18 +146,12 @@
     function getPokeDistinct(name) {
         let hash = 0;
         const cleanName = name.trim().toUpperCase();
-        for (let i = 0; i < cleanName.length; i++) {
-            hash = ((hash << 5) - hash) + cleanName.charCodeAt(i);
-            hash |= 0;
-        }
+        for (let i = 0; i < cleanName.length; i++) { hash = ((hash << 5) - hash) + cleanName.charCodeAt(i); hash |= 0; }
         let index = Math.abs(hash) % pokes.length;
-        const existingData = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
-        const usedIds = existingData.map(d => d.poke.id);
+        const localData = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
+        const usedIds = [...prefilledData, ...localData].map(d => d.poke.id);
         let attempts = 0;
-        while(usedIds.includes(pokes[index].id) && attempts < pokes.length) {
-            index = (index + 1) % pokes.length;
-            attempts++;
-        }
+        while(usedIds.includes(pokes[index].id) && attempts < pokes.length) { index = (index + 1) % pokes.length; attempts++; }
         return pokes[index];
     }
 
@@ -233,18 +211,20 @@
     }
 
     function renderWall() {
-        const data = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
-        document.getElementById('wall-grid').innerHTML = data.map(c => createCard(c, true)).join('');
+        const localData = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
+        const allData = [...prefilledData, ...localData];
+        document.getElementById('wall-grid').innerHTML = allData.map(c => createCard(c, true)).join('');
     }
 
     function drawOne() {
-        const data = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
-        if(data.length === 0) return;
+        const localData = JSON.parse(localStorage.getItem('pokeFinalFloating') || '[]');
+        const allData = [...prefilledData, ...localData];
+        if(allData.length === 0) return;
         const b = document.getElementById('ball-draw');
         b.classList.add('shake');
         setTimeout(() => {
             b.classList.remove('shake');
-            const c = data[Math.floor(Math.random()*data.length)];
+            const c = allData[Math.floor(Math.random()*allData.length)];
             document.getElementById('draw-target').innerHTML = createCard(c, false);
             document.getElementById('overlay').style.display = 'flex';
         }, 600);
@@ -253,8 +233,7 @@
 
     // 初始化动态星空
     const sf = document.getElementById('starField');
-    const starCount = 150;
-    for(let i=0; i<starCount; i++){
+    for(let i=0; i<150; i++){
         const s = document.createElement('div');
         s.className = 'star';
         const size = Math.random() * 3 + 1;
@@ -262,12 +241,9 @@
         s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
         const mx = (Math.random() - 0.5) * 150 + 'px'; 
         const my = (Math.random() - 0.5) * 150 + 'px';
-        s.style.setProperty('--mx', mx);
-        s.style.setProperty('--my', my);
-        const fDuration = (10 + Math.random() * 20) + 's';
-        const tDuration = (1 + Math.random() * 3) + 's';
-        s.style.setProperty('--f-duration', fDuration);
-        s.style.setProperty('--t-duration', tDuration);
+        s.style.setProperty('--mx', mx); s.style.setProperty('--my', my);
+        s.style.setProperty('--f-duration', (10 + Math.random() * 20) + 's');
+        s.style.setProperty('--t-duration', (1 + Math.random() * 3) + 's');
         sf.appendChild(s);
     }
 </script>
